@@ -9,7 +9,9 @@ var observable = keyUp.pipe(
   distinctUntilChanged(),
   map(value => {
     const promise = $.get('http://www.omdbapi.com/?apikey=62c474d4&s=' + encodeURIComponent(value)).promise();
-    return from(promise);
+    return from(promise).pipe(
+      retry(3)
+    );
   }),
   concatAll()
 );
